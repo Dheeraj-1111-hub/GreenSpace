@@ -11,7 +11,20 @@ import Schedule from '../components/Schedule'
 import Timeline from '../components/Timeline'
 import { FileUpload } from '../components/file-upload'
 import Footer from '../components/Footer'
+import Sidebar from '../components/Sidebar'
+import SidebarBottom from '../components/SidebarBottom'
+import { useState,useEffect} from 'react'
 const Home = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 450);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 425);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const timelineData = [
     {
       title: "Upload Your Space",
@@ -47,8 +60,13 @@ const Home = () => {
   
   
   return (
+    
     <div>
+      <div className='absolute z-100'>
+      {isMobile ? <SidebarBottom /> : <Sidebar />}
+      </div>
       
+      <div>
       <Navbar />
       <Hero />
       <div className='grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1'>
@@ -79,6 +97,8 @@ const Home = () => {
       </div>
       <FileUpload />
       <Footer />
+      </div>
+      
     </div>
   )
 }
